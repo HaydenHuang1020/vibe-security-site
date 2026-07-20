@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vibe Security 为 AI 生成应用提供代码仓库级安全扫描、人工验证和实际修复。">
+  <title>Vibe Security — AI 应用上线安全体检与修复</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Vibe Security 首页">
+      <span class="brand-mark" aria-hidden="true">V</span>
+      <span>VIBE SECURITY</span>
+    </a>
+    <button class="menu-button" aria-expanded="false" aria-controls="site-nav">菜单</button>
+    <nav id="site-nav" class="site-nav" aria-label="主导航">
+      <a href="#service">服务</a>
+      <a href="checks.html">检查项</a>
+      <a href="pricing.html">定价</a>
+      <a href="#process">流程</a>
+      <a class="nav-cta" href="intake.html">提交项目</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1><span>AI 写完代码，</span><span>我们确认它能安全上线</span></h1>
+        <p>代码仓库级扫描、人工验证、实际修复。上线前，把支付、权限、数据和密钥风险一次处理干净。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="intake.html">开始上线体检 <span aria-hidden="true">→</span></a>
+          <a class="button button-secondary" href="checks.html">查看检查项</a>
+        </div>
+      </div>
+
+      <div class="report-preview" aria-label="示例安全报告界面">
+        <div class="report-sidebar">
+          <span class="repo-name">▣ acme-app</span>
+          <span class="active">上线结论</span>
+          <span>风险详情</span>
+          <span>检查项</span>
+          <span>修复建议</span>
+          <span>扫描日志</span>
+        </div>
+        <div class="report-main">
+          <p class="report-label">上线结论</p>
+          <div class="report-status">
+            <span class="status-icon">✓</span>
+            <div><strong>有条件上线</strong><small>发现 6 个风险项，已完成人工验证</small></div>
+          </div>
+          <div class="severity-row">
+            <span><b class="critical">0</b>严重</span>
+            <span><b class="high">2</b>高风险</span>
+            <span><b class="medium">4</b>中风险</span>
+          </div>
+          <div class="finding-row"><span class="risk-dot high-bg"></span><span>未验证的用户输入</span><code>src/api/payment.ts:42</code><em>待修复</em></div>
+          <div class="finding-row"><span class="risk-dot high-bg"></span><span>越权访问（IDOR）</span><code>src/api/orders.ts:88</code><em>待修复</em></div>
+          <pre class="code-block"><span>39  const { amount, card } = req.body;</span>
+<span>40  const order = await db.order.findById(id);</span>
+<mark>42  await charge(order, amount, card);</mark></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="service" class="section workflow-section">
+      <div class="section-heading">
+        <h2>不止告诉你哪里有问题</h2>
+        <p>扫描器发现线索，安全工程师验证影响，再把修复代码交付到你的仓库。</p>
+      </div>
+      <div id="process" class="process-rail">
+        <article><span>01</span><h3>扫描</h3><p>代码、配置、依赖</p></article>
+        <article><span>02</span><h3>验证</h3><p>复现风险、排除误报</p></article>
+        <article><span>03</span><h3>修复</h3><p>Git diff / PR、复测、上线结论</p></article>
+      </div>
+      <div class="diff-panel">
+        <div class="diff-head"><span>BEFORE / AFTER</span><span>webhooks/stripe.ts</span></div>
+        <div class="diff-columns">
+          <pre><span>42  const event = await req.json();</span>
+<del>43  - 未验证 webhook</del>
+<span>44  handleEvent(event);</span></pre>
+          <pre><span>42  const body = await req.text();</span>
+<ins>43  + constructEvent 验证签名</ins>
+<span>44  handleEvent(event);</span></pre>
+        </div>
+      </div>
+      <p class="center-line">自动化速度，人工判断，真实修复。</p>
+    </section>
+
+    <section class="section checks-preview">
+      <div class="section-heading split-heading">
+        <h2><span>25</span> 项上线检查，<br>覆盖真正会出事的地方</h2>
+        <div><p>自动扫描给出线索，人工检查确认上下文。</p><a class="text-link" href="checks.html">查看完整检查清单 →</a></div>
+      </div>
+      <div class="check-columns">
+        <article><h3>支付安全</h3><ul><li>Stripe 密钥</li><li>Webhook 签名</li></ul></article>
+        <article><h3>数据库安全</h3><ul><li>RLS 策略</li><li>SQL 注入</li><li>IDOR</li></ul></article>
+        <article><h3>认证与权限</h3><ul><li>JWT</li><li>管理员 API</li><li>CSRF</li><li>速率限制</li></ul></article>
+        <article><h3>代码安全</h3><ul><li>XSS</li><li>文件上传</li><li>输入验证</li></ul></article>
+        <article><h3>信息泄露</h3><ul><li>.env</li><li>Source Map</li><li>错误信息</li></ul></article>
+      </div>
+    </section>
+
+    <section class="section offer-band">
+      <div><h2>先知道风险，再决定修到什么程度</h2><p>快速体检 ¥399 起；需要我们动手修复，可直接进入关键修复或上线救援。</p></div>
+      <div class="offer-actions"><a class="button button-primary" href="pricing.html">查看定价</a><a class="button button-secondary" href="sample-report.md">查看样例报告</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">V</span><span>VIBE SECURITY</span></div>
+    <p>让 AI 做出的应用，也能负责任地上线。</p>
+    <nav aria-label="页脚导航"><a href="checks.html">检查项</a><a href="pricing.html">定价</a><a href="intake.html">提交项目</a><a href="mailto:huangheteng555@gmail.com">邮件联系</a></nav>
+    <small>© <span data-year></span> Vibe Security</small>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

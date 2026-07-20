@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vibe Security 的 25 项 AI 应用上线安全检查清单。">
+  <title>检查项 — Vibe Security</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">V</span><span>VIBE SECURITY</span></a><button class="menu-button" aria-expanded="false" aria-controls="site-nav">菜单</button><nav id="site-nav" class="site-nav"><a href="index.html#service">服务</a><a aria-current="page" href="checks.html">检查项</a><a href="pricing.html">定价</a><a href="index.html#process">流程</a><a class="nav-cta" href="intake.html">提交项目</a></nav></header>
+  <main id="main">
+    <header class="page-hero"><h1><span>25</span> 项上线检查，覆盖真正会出事的地方</h1><p>自动扫描负责发现线索，人工检查负责理解代码上下文、验证影响并排除误报。</p></header>
+    <section class="section full-checks">
+      <article><header><span>01</span><h2>支付安全</h2></header><ul><li><b>Stripe 密钥暴露</b><p>识别前端代码与公开配置中的 secret key。</p></li><li><b>Stripe Webhook 签名</b><p>确认事件使用原始请求体和 webhook secret 验签。</p></li></ul></article>
+      <article><header><span>02</span><h2>数据库安全</h2></header><ul><li><b>Supabase / Firebase 权限</b><p>检查 RLS、开放策略和客户端敏感表访问。</p></li><li><b>SQL 注入</b><p>寻找拼接查询与未参数化输入。</p></li><li><b>IDOR 越权访问</b><p>验证资源 ID 查询是否同时校验所有权。</p></li></ul></article>
+      <article><header><span>03</span><h2>认证安全</h2></header><ul><li><b>JWT 算法与密钥</b><p>检查 none 算法、弱密钥及不安全验证。</p></li><li><b>密码存储</b><p>识别明文比较和不安全存储。</p></li><li><b>认证端点速率限制</b><p>检查登录、注册和重置密码端点。</p></li></ul></article>
+      <article><header><span>04</span><h2>权限控制</h2></header><ul><li><b>管理员 API</b><p>确认后端校验身份与角色，而非只隐藏按钮。</p></li><li><b>CSRF 保护</b><p>检查 Cookie、Origin 与 CSRF token 策略。</p></li></ul></article>
+      <article><header><span>05</span><h2>代码安全</h2></header><ul><li><b>XSS</b><p>识别危险 HTML 注入和未经净化的用户内容。</p></li><li><b>开放重定向</b><p>检查来自用户输入的跳转目标。</p></li><li><b>输入验证</b><p>确认 API 对关键字段进行服务端验证。</p></li><li><b>文件上传</b><p>检查 MIME、大小、文件名和存储位置。</p></li><li><b>硬编码密钥</b><p>查找常见云服务、支付和仓库凭证格式。</p></li></ul></article>
+      <article><header><span>06</span><h2>信息泄露</h2></header><ul><li><b>.env 暴露</b><p>识别包含真实凭证的环境文件。</p></li><li><b>调试端点</b><p>寻找生产环境遗留的测试和调试路由。</p></li><li><b>日志敏感信息</b><p>检查 token、密码和用户隐私数据输出。</p></li><li><b>错误信息</b><p>识别堆栈、查询和内部路径泄露。</p></li><li><b>Source Map</b><p>检查生产构建是否暴露源代码映射。</p></li></ul></article>
+      <article><header><span>07</span><h2>基础设施</h2></header><ul><li><b>安全响应头</b><p>检查 CSP、HSTS、X-Frame-Options 等。</p></li><li><b>CORS</b><p>识别过宽来源策略和凭证组合风险。</p></li><li><b>Cookie 安全</b><p>检查 Secure、HttpOnly 和 SameSite。</p></li><li><b>凭证文件</b><p>识别私钥、服务账号和云凭证文件。</p></li></ul></article>
+      <article><header><span>08</span><h2>依赖安全</h2></header><ul><li><b>npm audit</b><p>检查已知严重和高危依赖漏洞。</p></li></ul></article>
+    </section>
+    <section class="section methodology"><h2>自动化检查不是安全结论</h2><div><p>扫描结果会经过人工复核。我们会查看调用链、认证方式、部署配置和数据边界，确认问题是否真实可利用。</p><p>最终报告明确区分：已验证风险、需要配置确认的风险、误报，以及自动检查无法覆盖的人工检查项。</p></div><a class="button button-primary" href="intake.html">提交项目</a></section>
+  </main>
+  <footer class="site-footer"><div class="brand"><span class="brand-mark">V</span><span>VIBE SECURITY</span></div><p>让 AI 做出的应用，也能负责任地上线。</p><nav><a href="index.html">首页</a><a href="pricing.html">定价</a><a href="intake.html">提交项目</a></nav><small>© <span data-year></span> Vibe Security</small></footer><script src="app.js"></script>
+</body></html>
