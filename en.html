@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Human-validated security reviews for AI-built SaaS, agents, browser extensions, and launch-critical workflows.">
+  <title>Vibe Security — Human-validated launch security reviews</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="en.html" aria-label="Vibe Security home"><span class="brand-mark" aria-hidden="true">V</span><span>VIBE SECURITY</span></a>
+    <button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+      <a href="#scope">Scope</a><a href="#process">Process</a><a href="#pricing">Pricing</a><a href="sample-report-en.md">Sample</a><a href="index.html?lang=zh" lang="zh-CN">中文</a>
+      <a class="nav-cta" href="mailto:huangheteng555@gmail.com?subject=Vibe%20Security%20scope%20request&body=Project%20name%3A%0AStack%3A%0AStaging%20available%3A%0AMain%20security%20concern%3A">Request scope</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1><span>AI shipped the code.</span><span>We validate the trust boundaries.</span></h1>
+        <p>Repository and staging reviews for AI-built SaaS, agents, and browser extensions. Automated checks find leads; human review proves impact, removes false positives, and re-tests fixes.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="mailto:huangheteng555@gmail.com?subject=Vibe%20Security%20scope%20request&body=Project%20name%3A%0AStack%3A%0AStaging%20available%3A%0AMain%20security%20concern%3A">Request a one-page scope →</a>
+          <a class="button button-secondary" href="sample-report-en.md">View sample report</a>
+        </div>
+      </div>
+      <div class="report-preview" aria-label="Example review outcome">
+        <div class="report-sidebar"><span class="repo-name">▣ sample-app</span><span class="active">Launch decision</span><span>Evidence</span><span>Fixes</span><span>Re-test</span></div>
+        <div class="report-main">
+          <p class="report-label">Launch decision</p>
+          <div class="report-status"><span class="status-icon">✓</span><div><strong>Conditional launch</strong><small>Six findings manually validated</small></div></div>
+          <div class="severity-row"><span><b class="critical">0</b>Critical</span><span><b class="high">2</b>High</span><span><b class="medium">4</b>Medium</span></div>
+          <div class="finding-row"><span class="risk-dot high-bg"></span><span>Cross-tenant access</span><code>api/orders.ts:88</code><em>Open</em></div>
+          <div class="finding-row"><span class="risk-dot high-bg"></span><span>Unsigned webhook</span><code>api/webhook.ts:42</code><em>Open</em></div>
+          <pre class="code-block"><span>40  const order = await db.order.findById(id);</span><mark>42  await charge(order, amount, card);</mark><span>43  // ownership validation missing</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="scope" class="section checks-preview">
+      <div class="section-heading split-heading"><h2>Review what can quietly fail</h2><div><p>Authentication is not authorization. A clean demo does not prove tenant isolation, webhook authenticity, agent safety, or secret handling.</p></div></div>
+      <div class="check-columns">
+        <article><h3>Identity</h3><ul><li>Tenant isolation</li><li>Roles and admin paths</li></ul></article>
+        <article><h3>Payments</h3><ul><li>Webhook signatures</li><li>Entitlements and replay</li></ul></article>
+        <article><h3>Agents</h3><ul><li>Tool authorization</li><li>Prompt-injection paths</li></ul></article>
+        <article><h3>Data</h3><ul><li>Uploads and storage</li><li>Exports and deletion</li></ul></article>
+        <article><h3>Secrets</h3><ul><li>Client exposure</li><li>Connector scope</li></ul></article>
+      </div>
+    </section>
+
+    <section id="process" class="section workflow-section">
+      <div class="section-heading"><h2>Written scope before access</h2><p>No production testing, destructive actions, or real customer data unless explicitly authorized.</p></div>
+      <div class="process-rail">
+        <article><span>01</span><h3>Scope</h3><p>Choose one high-value workflow and define identities, actions, evidence, and exclusions.</p></article>
+        <article><span>02</span><h3>Validate</h3><p>Review the repository and staging environment using synthetic test records.</p></article>
+        <article><span>03</span><h3>Close</h3><p>Receive reproducible findings, prioritized fixes, a re-test, and a launch decision.</p></article>
+      </div>
+    </section>
+
+    <section id="pricing" class="section offer-band">
+      <div><h2>Start narrow: $59</h2><p>One repository or one representative workflow, delivered within 24 hours. Includes manually validated evidence, prioritized fixes, and one re-test. Fix implementation is scoped separately from $299.</p></div>
+      <div class="offer-actions"><a class="button button-primary" href="mailto:huangheteng555@gmail.com?subject=Vibe%20Security%20scope%20request&body=Project%20name%3A%0AStack%3A%0AStaging%20available%3A%0AMain%20security%20concern%3A">Request scope</a><a class="button button-secondary" href="authorization-form.md">Review authorization terms</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="brand"><span class="brand-mark" aria-hidden="true">V</span><span>VIBE SECURITY</span></div><p>Evidence before assurance. Authorization before testing.</p><nav><a href="sample-report-en.md">Sample report</a><a href="mailto:huangheteng555@gmail.com">Email</a><a href="index.html?lang=zh" lang="zh-CN">中文</a></nav><small>© <span data-year></span> Vibe Security</small></footer>
+  <script src="app.js"></script>
+</body>
+</html>

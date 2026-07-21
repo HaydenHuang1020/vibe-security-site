@@ -7,6 +7,11 @@
   <title>Vibe Security — AI 应用上线安全体检与修复</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    if (!navigator.language.toLowerCase().startsWith('zh') && !new URLSearchParams(location.search).has('lang')) {
+      location.replace('en.html');
+    }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -17,6 +22,7 @@
     </a>
     <button class="menu-button" aria-expanded="false" aria-controls="site-nav">菜单</button>
     <nav id="site-nav" class="site-nav" aria-label="主导航">
+      <a href="en.html" lang="en">English</a>
       <a href="#service">服务</a>
       <a href="checks.html">检查项</a>
       <a href="pricing.html">定价</a>
