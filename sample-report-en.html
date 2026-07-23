@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A fictional Vibe Security sample showing the evidence, fix guidance, and re-test status included in a launch security review.">
+  <title>Sample security review — Vibe Security</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="en.html" aria-label="Vibe Security home"><span class="brand-mark" aria-hidden="true">V</span><span>VIBE SECURITY</span></a>
+    <button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+      <a href="en.html#scope">Scope</a><a href="en.html#process">Process</a><a href="en.html#pricing">Pricing</a><a href="sample-report-en.html" aria-current="page">Sample</a><a href="index.html?lang=zh" lang="zh-CN">中文</a>
+      <a class="nav-cta" href="mailto:huangheteng555@gmail.com?subject=Vibe%20Security%20scope%20request&amp;body=Project%20name%3A%0AStack%3A%0AStaging%20available%3A%0AMain%20security%20concern%3A">Request scope</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-hero sample-hero">
+      <h1>See the evidence before you buy the review.</h1>
+      <p>This fictional example shows the structure of a Vibe Security delivery: written scope, a launch decision, manually validated evidence, prioritized remediation, and a recorded re-test. It is not a report about a real company.</p>
+      <div class="sample-meta" aria-label="Sample report metadata">
+        <span><b>Review</b> One payment workflow</span>
+        <span><b>Environment</b> Repository + staging</span>
+        <span><b>Turnaround</b> 24 hours</span>
+        <span><b>Data</b> Synthetic identities only</span>
+      </div>
+    </section>
+
+    <section class="section sample-report">
+      <div class="decision-banner">
+        <div>
+          <span class="decision-label">Launch decision</span>
+          <h2>Hold payment launch</h2>
+        </div>
+        <p>Fix and re-test the confirmed cross-tenant order access before enabling live payments. The webhook hardening item can follow in the same release.</p>
+      </div>
+
+      <div class="sample-grid">
+        <aside class="report-index" aria-label="Report contents">
+          <a href="#sample-scope">01 Scope</a>
+          <a href="#sample-summary">02 Summary</a>
+          <a href="#finding-01">03 Finding VS-01</a>
+          <a href="#sample-retest">04 Re-test</a>
+          <a href="#sample-close">05 Closeout</a>
+        </aside>
+
+        <div class="report-document">
+          <section id="sample-scope" class="report-section">
+            <span class="report-kicker">01 / Scope</span>
+            <h2>Exactly what was authorized</h2>
+            <dl class="scope-list">
+              <div><dt>Workflow</dt><dd>Signed-in user creates an order, pays through Stripe Checkout, and receives access after webhook confirmation.</dd></div>
+              <div><dt>Identities</dt><dd>Anonymous visitor, tenant A member, tenant B member, and administrator.</dd></div>
+              <div><dt>Allowed</dt><dd>Read-only repository review and non-destructive staging requests using synthetic accounts and Stripe test mode.</dd></div>
+              <div><dt>Excluded</dt><dd>Production, real customer records, availability testing, social engineering, and third-party infrastructure.</dd></div>
+            </dl>
+          </section>
+
+          <section id="sample-summary" class="report-section">
+            <span class="report-kicker">02 / Summary</span>
+            <h2>What the reviewer validated</h2>
+            <div class="summary-strip">
+              <div><strong class="high">1</strong><span>High</span></div>
+              <div><strong class="medium">1</strong><span>Medium</span></div>
+              <div><strong class="critical">0</strong><span>Critical</span></div>
+              <div><strong class="accent-text">2</strong><span>False positives removed</span></div>
+            </div>
+            <p class="sample-note">Severity reflects demonstrated impact in the authorized staging environment—not scanner output alone.</p>
+          </section>
+
+          <article id="finding-01" class="report-section finding-card">
+            <header class="finding-head">
+              <div><span class="finding-id">VS-01</span><h2>Cross-tenant order read through server route</h2></div>
+              <span class="severity high-severity">High · Confirmed</span>
+            </header>
+
+            <div class="finding-block">
+              <h3>Trust boundary</h3>
+              <p>The authenticated user boundary held, but the tenant boundary did not. The server accepted an order identifier from the client without deriving tenant ownership from the session.</p>
+            </div>
+
+            <div class="finding-block">
+              <h3>Reproduction evidence</h3>
+              <ol class="evidence-steps">
+                <li>Tenant B created synthetic order <code>ord_test_b_1042</code> in staging.</li>
+                <li>Tenant A requested <code>GET /api/orders/ord_test_b_1042</code> using its own valid session.</li>
+                <li>The route returned <code>200</code> with Tenant B's synthetic email and order amount. Expected result: <code>403</code> or no record.</li>
+              </ol>
+              <div class="evidence-table" role="table" aria-label="Identity test matrix">
+                <div role="row" class="evidence-head"><span role="columnheader">Identity</span><span role="columnheader">Own order</span><span role="columnheader">Other tenant</span></div>
+                <div role="row"><span role="cell">Anonymous</span><span role="cell">401</span><span role="cell">401</span></div>
+                <div role="row"><span role="cell">Tenant A</span><span role="cell">200</span><span role="cell" class="failed-cell">200 · Failed</span></div>
+                <div role="row"><span role="cell">Administrator</span><span role="cell">200</span><span role="cell">200 · Expected</span></div>
+              </div>
+            </div>
+
+            <div class="finding-block">
+              <h3>Code evidence</h3>
+              <pre class="sample-code"><code><span>const order = await db.order.findUnique({ where: { id } });</span>
+<mark>return Response.json(order); // tenant ownership not enforced</mark></code></pre>
+              <p class="evidence-caption">Illustrative code for this fictional report. A real delivery cites the actual repository path, line, request, response, and timestamp.</p>
+            </div>
+
+            <div class="finding-block">
+              <h3>Fix guidance</h3>
+              <p>Resolve membership from the authenticated server-side identity and query by both order ID and authorized tenant ID. Enforce the same condition in database policy so a future route cannot bypass it.</p>
+              <pre class="sample-code fixed-code"><code><span>const tenantId = await requireTenantMembership(session.user.id);</span>
+<mark>const order = await db.order.findFirst({ where: { id, tenantId } });</mark></code></pre>
+            </div>
+          </article>
+
+          <section id="sample-retest" class="report-section">
+            <span class="report-kicker">04 / Re-test</span>
+            <h2>Fix status is part of the delivery</h2>
+            <ul class="retest-list">
+              <li><span>PASS</span> Tenant A cannot read Tenant B's order by direct identifier.</li>
+              <li><span>PASS</span> The same ownership rule holds for update, delete, export, and batch routes.</li>
+              <li><span>PASS</span> Administrator access remains explicit and audit-logged.</li>
+              <li class="pending"><span>PENDING</span> Stripe webhook replay test awaits the customer's next staging deploy.</li>
+            </ul>
+          </section>
+
+          <section id="sample-close" class="report-section report-close">
+            <span class="report-kicker">05 / Closeout</span>
+            <h2>The client leaves with a decision—not a scan dump.</h2>
+            <p>Every confirmed issue has evidence, impact, a practical fix, an owner-ready priority, and a re-test state. Unconfirmed hypotheses stay clearly separated from vulnerabilities.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="mailto:huangheteng555@gmail.com?subject=Vibe%20Security%20scope%20request&amp;body=Project%20name%3A%0AStack%3A%0AStaging%20available%3A%0AMain%20security%20concern%3A">Request a one-page scope →</a>
+              <a class="button button-secondary" href="authorization-form-en.html">Review authorization terms</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="brand"><span class="brand-mark" aria-hidden="true">V</span><span>VIBE SECURITY</span></div><p>Evidence before assurance. Authorization before testing.</p><nav><a href="en.html">Home</a><a href="mailto:huangheteng555@gmail.com">Email</a><a href="index.html?lang=zh" lang="zh-CN">中文</a></nav><small>© <span data-year></span> Vibe Security</small></footer>
+  <script src="app.js"></script>
+</body>
+</html>
